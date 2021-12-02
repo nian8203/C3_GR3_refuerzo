@@ -9,8 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -32,16 +34,16 @@ public class ClienteResource {
 
     @GET
     public List<ClienteModel> getCliente() {
-
         return cs.getClientes();
     }
+    
 
     @Path("/{ProductoId}")
     @GET
     public ClienteModel getClienteId(@PathParam("ProductoId") int id) {
-
         return cs.getClienteId(id);
     }
+    
     
     @POST
     public ClienteModel addCliente(String JSON){
@@ -52,5 +54,21 @@ public class ClienteResource {
         return cs.addCliente(cm);
     }
     
+    
+     @PUT
+    public ClienteModel actualizarCliente(String JSON){
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
+        ClienteModel cm = gson.fromJson(JSON, ClienteModel.class);
+        return cs.actualizarCliente(cm);
+    }
+    
+    @Path("/{ClienteId}")
+    @DELETE
+    public String deleteCliente(@PathParam("ClienteId") int id){
+        System.out.println("entro metodo");
+        return cs.deleteCliente(id);
+    }
 
 }

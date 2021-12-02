@@ -89,5 +89,45 @@ public class ClienteService {
         return cm;
     }
     
+    public ClienteModel actualizarCliente(ClienteModel cm){
+        
+        try {
+            
+            Connection conn = Conexion.getConnection();
+            PreparedStatement pst = conn.prepareStatement("update clientes set  nombre = ?, apellido = ?, direccion = ?, telefono = ?, correo = ? where id = ?");
+            
+            pst.setString(1, cm.getNombre().trim());
+            pst.setString(2, cm.getApellido().trim());
+            pst.setString(3, cm.getDireccion().trim());
+            pst.setString(4, cm.getTelefono().trim());
+            pst.setString(5, cm.getCorreo().trim());
+            pst.setInt(6, cm.getId());
+            
+            pst.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("ERROR3 = "+e.getMessage());
+            return null;
+        }
+        
+        return cm;        
+        
+    }
+    
+    
+    public String deleteCliente(int id){
+        System.out.println("id = "+id);
+        try {
+            Connection conn = Conexion.getConnection();
+            PreparedStatement pst = conn.prepareStatement("delete from clientes where id = ?");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar"+e.getMessage());
+            return "{\"Accion\":\"Error\"}";
+        }
+        return "{\"Accion\":\"Registro Borrado\"}";
+    }
+    
 
 }
